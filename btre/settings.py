@@ -143,9 +143,7 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
 
-# Email config
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'MUST_ENTER_EMAIL'
-# EMAIL_HOST_PASSWORD = 'MUST_ENTER_PASSWORD'
-# EMAIL_USE_TLS=True 
+try:
+    from btre.local_settings import *
+except ImportError:
+    pass
