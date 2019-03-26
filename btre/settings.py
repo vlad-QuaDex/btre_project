@@ -25,7 +25,7 @@ SECRET_KEY = 'p@l+qg)q%*bs_o@z)cpyao9vmuezg!1v^3*8q)r9qup$m=4^4v'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -42,7 +42,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.humanize'
+    'django.contrib.humanize',
+
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -132,10 +134,24 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'btre/static')
 ]
 
+# Connect s3 for static files
+AWS_ACCESS_KEY_ID = ' '
+AWS_SECRET_ACCESS_KEY = ' '
+AWS_STORAGE_BUCKET_NAME = 'static-django-files'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+AWS_LOCATION = 'static'
+
+STATIC_URL = 'https://%s/%s/' % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
 # Media Folder Sttings
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'btre.storage_backends.MediaStorage'
 
 # Messages 
 from django.contrib.messages import constants as messages
